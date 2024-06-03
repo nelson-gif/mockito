@@ -9,7 +9,10 @@ import java.util.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.internal.stubbing.answers.AnswersWithDelay;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
 
 import com.mockito.ejemplos.models.Examen;
 import com.mockito.ejemplos.repositories.*;
@@ -110,11 +113,26 @@ public class ExamenServiceImplTest {
 //	
 	@Test
 	void TestguardarExamen() {
-		
+		//Given
 		Examen newExamen = Datos.EXAMEN;
 		newExamen.setPreguntas(Datos.PREGUNTAS);
-		when(repository.guardar(any(Examen.class))).thenReturn(Datos.EXAMEN);
+		when(repository.guardar(any(Examen.class))).then( new Answer<Examen>() {
+
+			Long secuencia = 8L;
+			
+			@Override
+			public Examen answer(InvocationOnMock invocation) throws Throwable {
+				Examen examen = invocation.getArgument(0);
+				examen.setId(secuencia++);
+				return examen;
+			}
+			
+		});
+		
+		//When
 		Examen examen = service.guardar(newExamen);
+		
+		//then
 		assertNotNull(examen.getId());
 		assertEquals("Fisica", examen.getNombre());
 		assertEquals(8L, examen.getId());
