@@ -96,4 +96,31 @@ public class ExamenServiceImplTest {
 		
 	}
 	
+//	@Test
+//	void TestguardarExamenFailGuardarVarias() {
+//		when(repository.guardar(any(Examen.class))).thenReturn(Datos.EXAMEN);
+//		Examen examen = service.guardar(Datos.EXAMEN);
+//		assertNotNull(examen.getId());
+//		assertEquals("Fisica", examen.getNombre());
+//		assertEquals(8L, examen.getId());
+//		verify(repository).guardar(any(Examen.class));
+//		verify(preguntaRepository).guardarVarias(anyList());;
+//		
+//	}
+//	
+	@Test
+	void TestguardarExamen() {
+		
+		Examen newExamen = Datos.EXAMEN;
+		newExamen.setPreguntas(Datos.PREGUNTAS);
+		when(repository.guardar(any(Examen.class))).thenReturn(Datos.EXAMEN);
+		Examen examen = service.guardar(newExamen);
+		assertNotNull(examen.getId());
+		assertEquals("Fisica", examen.getNombre());
+		assertEquals(8L, examen.getId());
+		verify(repository).guardar(any(Examen.class));
+		verify(preguntaRepository).guardarVarias(anyList());;
+		
+	}
+	
 }

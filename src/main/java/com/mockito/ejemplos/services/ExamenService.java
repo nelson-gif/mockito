@@ -9,5 +9,7 @@ public interface ExamenService {
 	Optional<Examen> findExampenPorNombre(String nombre);
 	
 	Examen findExamenPorNombreConPregunas(String nombre);
+	
+	Examen guardar(Examen examen);
 
 }
